@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import DashboardLayout from '@/layouts/DashboardLayout';
 import AuthLayout from '@/layouts/AuthLayout';
 import { ProtectedRoute, PublicRoute } from './RouteGuard';
+import LoginPage from '@/pages/auth/LoginPage';
+import RegisterPage from '@/pages/auth/RegisterPage';
 
 const router = createBrowserRouter([
   {
@@ -15,8 +17,8 @@ const router = createBrowserRouter([
       {
         element: <AuthLayout />,
         children: [
-          { path: 'login', element: <div>Login Page Placeholder</div> },
-          { path: 'register', element: <div>Register Page Placeholder</div> },
+          { path: 'login', element: <LoginPage /> },
+          { path: 'register', element: <RegisterPage /> },
         ],
       },
     ],
