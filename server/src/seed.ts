@@ -1,18 +1,20 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import User from './models/user.model';
+import Lead from './models/lead.model';
 import { env } from './config/env';
 
 dotenv.config();
 
-const seedUsers = async () => {
+const seedData = async () => {
   try {
     await mongoose.connect(env.MONGODB_URI);
     console.log('🌱 Connected to MongoDB for seeding...');
 
-    // Clear existing users
+    // Clear existing data
     await User.deleteMany();
-    console.log('🗑️ Existing users cleared');
+    await Lead.deleteMany();
+    console.log('🗑️ Existing data cleared');
 
     const users = [
       {
@@ -29,14 +31,59 @@ const seedUsers = async () => {
       },
     ];
 
-    await User.create(users);
+    const seededUsers = await User.create(users);
     console.log('✅ Users seeded successfully');
+
+    const adminId = seededUsers.find((u) => u.role === 'admin')?._id;
+
+    if (adminId) {
+      const leads = [
+        {
+          name: 'Rahul Sharma',
+          email: 'rahul@example.com',
+          status: 'New',
+          source: 'Website',
+          createdBy: adminId,
+        },
+        {
+          name: 'Priya Singh',
+          email: 'priya@example.com',
+          status: 'Qualified',
+          source: 'Instagram',
+          createdBy: adminId,
+        },
+        {
+          name: 'Amit Patel',
+          email: 'amit@example.com',
+          status: 'Contacted',
+          source: 'Referral',
+          createdBy: adminId,
+        },
+        {
+          name: 'Sneha Reddy',
+          email: 'sneha@example.com',
+          status: 'Lost',
+          source: 'Website',
+          createdBy: adminId,
+        },
+        {
+          name: 'Vikram Malhotra',
+          email: 'vikram@example.com',
+          status: 'New',
+          source: 'Instagram',
+          createdBy: adminId,
+        },
+      ];
+
+      await Lead.create(leads);
+      console.log('✅ Leads seeded successfully');
+    }
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error seeding users:', error);
+    console.error('❌ Error seeding data:', error);
     process.exit(1);
   }
 };
 
-seedUsers();
+seedData();

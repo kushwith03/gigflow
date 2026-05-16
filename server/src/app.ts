@@ -6,6 +6,7 @@ import { errorHandler, notFound } from './middlewares/error.middleware';
 import { env } from './config/env';
 import { sendResponse } from './utils/response';
 import authRoutes from './routes/auth.routes';
+import leadRoutes from './routes/lead.routes';
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/leads', leadRoutes);
 
 // Error Handling
 app.use(notFound);
