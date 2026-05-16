@@ -4,6 +4,7 @@ import AuthLayout from '@/layouts/AuthLayout';
 import { ProtectedRoute, PublicRoute } from './RouteGuard';
 import LoginPage from '@/pages/auth/LoginPage';
 import RegisterPage from '@/pages/auth/RegisterPage';
+import LeadsPage from '@/pages/dashboard/LeadsPage';
 
 const router = createBrowserRouter([
   {
@@ -30,8 +31,8 @@ const router = createBrowserRouter([
       {
         element: <DashboardLayout />,
         children: [
-          { index: true, element: <div>Dashboard Overview Placeholder</div> },
-          { path: 'leads', element: <div>Leads Management Placeholder</div> },
+          { index: true, element: <LeadsPage /> },
+          { path: 'leads', element: <LeadsPage /> },
         ],
       },
     ],
