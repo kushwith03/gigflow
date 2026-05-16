@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import { errorHandler, notFound } from './middlewares/error.middleware';
 import { env } from './config/env';
 import { sendResponse } from './utils/response';
+import authRoutes from './routes/auth.routes';
 
 const app = express();
 
@@ -16,7 +17,7 @@ if (env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Health Route
+// Routes
 app.get('/health', (req, res) => {
   sendResponse(res, {
     message: 'GigFlow API is healthy',
@@ -28,8 +29,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Routes Placeholder
-// app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // Error Handling
 app.use(notFound);

@@ -11,6 +11,13 @@ export const errorHandler = (
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
+  // Handle Mongoose duplicate key error
+  if (err.code === 11000) {
+    const field = Object.keys(err.keyValue)[0];
+    err.message = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
+    err.statusCode = 400;
+  }
+
   if (env.NODE_ENV === 'development') {
     res.status(err.statusCode).json({
       success: false,
