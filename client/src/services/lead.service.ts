@@ -1,4 +1,4 @@
-import { Lead, LeadFilters, LeadsResponse } from '@/types/lead';
+import type { Lead, LeadFilters, LeadsResponse } from '@/types/lead';
 import api from './api';
 
 export const leadService = {

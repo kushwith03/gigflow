@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import User from './models/user.model';
-import Lead from './models/lead.model';
-import { env } from './config/env';
+import User from './models/user.model.js';
+import Lead from './models/lead.model.js';
+import { env } from './config/env.js';
+import type { IUser } from './types/user.types.js';
 
 dotenv.config();
 
@@ -31,10 +32,10 @@ const seedData = async () => {
       },
     ];
 
-    const seededUsers = await User.create(users);
+    const seededUsers = await User.create(users as Partial<IUser>[]);
     console.info('Users seeded successfully');
 
-    const adminId = seededUsers.find((u) => u.role === 'admin')?._id;
+    const adminId = seededUsers.find((u: any) => u.role === 'admin')?._id;
 
     if (adminId) {
       const leads = [

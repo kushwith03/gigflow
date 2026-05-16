@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import { leadService } from '@/services/lead.service';
-import { Lead, LeadFilters, Pagination } from '@/types/lead';
+import type { Lead, LeadFilters, Pagination } from '@/types/lead';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Button } from '@/components/ui/Button';

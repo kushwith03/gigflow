@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { type Request, type Response, type NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { env } from '../config/env';
-import { AppError, asyncHandler } from '../utils/errors';
-import User from '../models/user.model';
-import { IUser } from '../types/user.types';
+import { env } from '../config/env.js';
+import { AppError, asyncHandler } from '../utils/errors.js';
+import User from '../models/user.model.js';
+import { type IUser } from '../types/user.types.js';
 
 // Extend Express Request type to include user
 declare global {

@@ -2,11 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import { errorHandler, notFound } from './middlewares/error.middleware';
-import { env } from './config/env';
-import { sendResponse } from './utils/response';
-import authRoutes from './routes/auth.routes';
-import leadRoutes from './routes/lead.routes';
+import { errorHandler, notFound } from './middlewares/error.middleware.js';
+import { env } from './config/env.js';
+import { sendResponse } from './utils/response.js';
+import authRoutes from './routes/auth.routes.js';
+import leadRoutes from './routes/lead.routes.js';
 
 const app = express();
 

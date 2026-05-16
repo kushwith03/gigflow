@@ -1,7 +1,7 @@
-import User from '../models/user.model';
-import { AppError } from '../utils/errors';
-import { generateToken } from '../utils/jwt';
-import { IUser } from '../types/user.types';
+import User from '../models/user.model.js';
+import { AppError } from '../utils/errors.js';
+import { generateToken } from '../utils/jwt.js';
+import type { IUser } from '../types/user.types.js';
 
 export const registerUser = async (userData: Partial<IUser>) => {
   const { email } = userData;
@@ -12,7 +12,7 @@ export const registerUser = async (userData: Partial<IUser>) => {
   }
 
   const user = await User.create(userData);
-  const token = generateToken(user._id as string);
+  const token = generateToken(user._id as unknown as string);
 
   return {
     user: {
@@ -33,7 +33,7 @@ export const loginUser = async (credentials: Pick<IUser, 'email' | 'password'>) 
     throw new AppError('Invalid email or password', 401);
   }
 
-  const token = generateToken(user._id as string);
+  const token = generateToken(user._id as unknown as string);
 
   return {
     user: {

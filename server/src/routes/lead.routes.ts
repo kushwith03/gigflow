@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import * as leadController from '../controllers/lead.controller';
-import { protect, authorize } from '../middlewares/auth.middleware';
-import { validate } from '../middlewares/validate.middleware';
-import { createLeadSchema, updateLeadSchema, leadQuerySchema } from '../validations/lead.validation';
+import * as leadController from '../controllers/lead.controller.js';
+import { protect, authorize } from '../middlewares/auth.middleware.js';
+import { validate } from '../middlewares/validate.middleware.js';
+import { createLeadSchema, updateLeadSchema, leadQuerySchema } from '../validations/lead.validation.js';
 
 const router = Router();
 

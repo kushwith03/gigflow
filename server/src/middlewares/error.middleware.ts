@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { AppError } from '../utils/errors';
-import { env } from '../config/env';
+import { type Request, type Response, type NextFunction } from 'express';
+import { AppError } from '../utils/errors.js';
+import { env } from '../config/env.js';
 
 interface ExtendedError extends Error {
   statusCode?: number;
@@ -22,8 +22,10 @@ export const errorHandler = (
   // Handle Mongoose duplicate key error
   if (err.code === 11000 && err.keyValue) {
     const field = Object.keys(err.keyValue)[0];
-    err.message = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
-    err.statusCode = 400;
+    if (field) {
+      err.message = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
+      err.statusCode = 400;
+    }
   }
 
   if (env.NODE_ENV === 'development') {

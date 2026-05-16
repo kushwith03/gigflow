@@ -1,7 +1,7 @@
-import { FilterQuery } from 'mongoose';
-import Lead from '../models/lead.model';
-import { ILead, ILeadFilter } from '../types/lead.types';
-import { AppError } from '../utils/errors';
+import { type FilterQuery } from 'mongoose';
+import Lead from '../models/lead.model.js';
+import { type ILead, type ILeadFilter } from '../types/lead.types.js';
+import { AppError } from '../utils/errors.js';
 
 export const createLead = async (leadData: Partial<ILead>, userId: string) => {
   const existingLead = await Lead.findOne({ email: leadData.email });

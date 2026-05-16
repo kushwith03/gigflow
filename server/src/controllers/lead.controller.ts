@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
-import { asyncHandler } from '../utils/errors';
-import { sendResponse } from '../utils/response';
-import * as leadService from '../services/lead.service';
-import { ILeadFilter } from '../types/lead.types';
+import type { Request, Response } from 'express';
+import { asyncHandler } from '../utils/errors.js';
+import { sendResponse } from '../utils/response.js';
+import * as leadService from '../services/lead.service.js';
+import type { ILeadFilter } from '../types/lead.types.js';
 
 export const createLead = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?._id as string;
+  const userId = req.user?._id as unknown as string;
   const lead = await leadService.createLead(req.body, userId);
 
   sendResponse(res, {
@@ -26,7 +26,7 @@ export const getLeads = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getLead = asyncHandler(async (req: Request, res: Response) => {
-  const lead = await leadService.getLeadById(req.params.id);
+  const lead = await leadService.getLeadById(req.params.id as string);
 
   sendResponse(res, {
     data: lead,
@@ -34,7 +34,7 @@ export const getLead = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const updateLead = asyncHandler(async (req: Request, res: Response) => {
-  const lead = await leadService.updateLead(req.params.id, req.body);
+  const lead = await leadService.updateLead(req.params.id as string, req.body);
 
   sendResponse(res, {
     message: 'Lead updated successfully',
@@ -43,7 +43,7 @@ export const updateLead = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const deleteLead = asyncHandler(async (req: Request, res: Response) => {
-  await leadService.deleteLead(req.params.id);
+  await leadService.deleteLead(req.params.id as string);
 
   sendResponse(res, {
     message: 'Lead deleted successfully',

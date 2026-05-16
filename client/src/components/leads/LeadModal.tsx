@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { leadService } from '@/services/lead.service';
-import { Lead } from '@/types/lead';
+import type { Lead } from '@/types/lead';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import {
