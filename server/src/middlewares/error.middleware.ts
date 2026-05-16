@@ -2,8 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/errors';
 import { env } from '../config/env';
 
+interface ExtendedError extends Error {
+  statusCode?: number;
+  status?: string;
+  code?: number;
+  keyValue?: Record<string, string>;
+  isOperational?: boolean;
+}
+
 export const errorHandler = (
-  err: any,
+  err: ExtendedError,
   req: Request,
   res: Response,
   next: NextFunction
@@ -12,7 +20,7 @@ export const errorHandler = (
   err.status = err.status || 'error';
 
   // Handle Mongoose duplicate key error
-  if (err.code === 11000) {
+  if (err.code === 11000 && err.keyValue) {
     const field = Object.keys(err.keyValue)[0];
     err.message = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
     err.statusCode = 400;
@@ -33,7 +41,7 @@ export const errorHandler = (
         message: err.message,
       });
     } else {
-      console.error('ERROR 💥', err);
+      console.error('Unexpected Error:', err);
       res.status(500).json({
         success: false,
         message: 'Something went very wrong!',

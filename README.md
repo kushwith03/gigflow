@@ -1,8 +1,8 @@
-# GigFlow 🚀
+# GigFlow
 
 A production-quality Lead Management System (CRM) built for efficiency and scale.
 
-## ✨ Features
+## Features
 
 - **Robust Authentication:** JWT-based secure access with session persistence.
 - **Role-Based Access Control (RBAC):** Distinct permissions for `admin` and `sales` roles.
@@ -12,7 +12,7 @@ A production-quality Lead Management System (CRM) built for efficiency and scale
 - **Dark Mode:** System-aware toggle with persistent user preference.
 - **Developer Experience:** TypeScript throughout, absolute imports, and containerized development.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **Framework:** React 19 (Vite)
@@ -31,7 +31,7 @@ A production-quality Lead Management System (CRM) built for efficiency and scale
 - **Security:** JWT, bcryptjs, Helmet, CORS
 - **Validation:** Zod
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 gigflow/
@@ -55,7 +55,7 @@ gigflow/
 └── docker-compose.yml   # Orchestration for the full stack
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 20+
@@ -93,7 +93,7 @@ docker-compose up --build
 ```
 Access the app at `http://localhost`.
 
-## 🧪 API Documentation
+## API Documentation
 
 Detailed API documentation is available in [API.md](./API.md).
 
@@ -109,9 +109,9 @@ Detailed API documentation is available in [API.md](./API.md).
 - `PATCH /api/leads/:id` - Update lead (Protected)
 - `DELETE /api/leads/:id` - Remove lead (Admin Only)
 
-## 🛡️ Default Credentials (after seeding)
+## Default Credentials (after seeding)
 - **Admin:** `admin@gigflow.com` / `password123`
 - **Sales:** `sales@gigflow.com` / `password123`
 
 ---
-Built with ❤️ for production-company internship preparations.
+Built for production-company internship preparations.

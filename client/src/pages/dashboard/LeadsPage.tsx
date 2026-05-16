@@ -53,8 +53,9 @@ const LeadsPage = () => {
       });
       setLeads(response.data);
       setPagination(response.meta);
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to fetch leads');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Failed to fetch leads';
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -81,9 +82,15 @@ const LeadsPage = () => {
         limit: 1000,
         page: 1,
       });
-      downloadCSV(response.data, `leads-export-${new Date().toISOString().split('T')[0]}.csv`);
+      // Correctly cast response.data to expected Record<string, unknown>[]
+      const exportData = response.data.map(lead => ({
+        ...lead,
+        _id: lead._id.toString(),
+      })) as unknown as Record<string, unknown>[];
+      
+      downloadCSV(exportData, `leads-export-${new Date().toISOString().split('T')[0]}.csv`);
       toast.success('Leads exported successfully');
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error('Failed to export leads');
     } finally {
       setExporting(false);
@@ -96,8 +103,9 @@ const LeadsPage = () => {
       await leadService.deleteLead(id);
       toast.success('Lead deleted successfully');
       fetchLeads();
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to delete lead');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Failed to delete lead';
+      toast.error(message);
     }
   };
 

@@ -1,3 +1,4 @@
+import { FilterQuery } from 'mongoose';
 import Lead from '../models/lead.model';
 import { ILead, ILeadFilter } from '../types/lead.types';
 import { AppError } from '../utils/errors';
@@ -19,7 +20,7 @@ export const createLead = async (leadData: Partial<ILead>, userId: string) => {
 export const getLeads = async (filters: ILeadFilter) => {
   const { status, source, search, page = 1, limit = 10, sort = 'latest' } = filters;
 
-  const query: Record<string, any> = {};
+  const query: FilterQuery<ILead> = {};
 
   if (status) query.status = status;
   if (source) query.source = source;

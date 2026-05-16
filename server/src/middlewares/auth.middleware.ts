@@ -22,7 +22,7 @@ export const protect = asyncHandler(async (req: Request, res: Response, next: Ne
   }
 
   if (!token) {
-    return next(new AppError('You are not logged in! Please log in to get access.', 401));
+    return next(new AppError('Please log in to access this resource', 401));
   }
 
   try {

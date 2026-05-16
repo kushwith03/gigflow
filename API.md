@@ -1,8 +1,8 @@
-# GigFlow API Documentation 📖
+# GigFlow API Documentation
 
 Base URL: `http://localhost:5000/api`
 
-## 🔐 Authentication
+## Authentication
 
 ### Register User
 `POST /auth/register`
@@ -19,7 +19,7 @@ Base URL: `http://localhost:5000/api`
 - **Headers:** `Authorization: Bearer <token>`
 - **Response:** `200 OK` with current user data.
 
-## 👥 Leads Management
+## Leads Management
 
 ### List Leads
 `GET /leads`
@@ -50,6 +50,6 @@ Base URL: `http://localhost:5000/api`
 - **Headers:** `Authorization: Bearer <token>` (Admin Only)
 - **Response:** `200 OK` with success message.
 
-## 🏥 Health Check
+## Health Check
 `GET /health`
 - **Response:** `200 OK` with server status and environment info.

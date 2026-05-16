@@ -7,7 +7,6 @@ const api = axios.create({
   },
 });
 
-// Request interceptor for future token support
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -21,12 +20,10 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor for global error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     const message = error.response?.data?.message || 'Something went wrong';
-    // Potential global error toast trigger here
     return Promise.reject(new Error(message));
   }
 );

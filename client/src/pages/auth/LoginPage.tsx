@@ -31,8 +31,9 @@ const LoginPage = () => {
       await login(data);
       toast.success('Login successful!');
       navigate('/dashboard');
-    } catch (error: any) {
-      toast.error(error.message || 'Login failed. Please check your credentials.');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Login failed. Please check your credentials.';
+      toast.error(message);
     }
   };
 

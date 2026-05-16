@@ -64,8 +64,9 @@ export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
       }
       onSuccess();
       onClose();
-    } catch (error: any) {
-      toast.error(error.message || 'Something went wrong');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Something went wrong';
+      toast.error(message);
     }
   };
 

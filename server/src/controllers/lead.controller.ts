@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { asyncHandler } from '../utils/errors';
 import { sendResponse } from '../utils/response';
 import * as leadService from '../services/lead.service';
+import { ILeadFilter } from '../types/lead.types';
 
 export const createLead = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?._id as string;
@@ -15,7 +16,7 @@ export const createLead = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getLeads = asyncHandler(async (req: Request, res: Response) => {
-  const result = await leadService.getLeads(req.query as any);
+  const result = await leadService.getLeads(req.query as unknown as ILeadFilter);
 
   sendResponse(res, {
     message: 'Leads fetched successfully',

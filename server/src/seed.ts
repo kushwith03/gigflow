@@ -9,12 +9,12 @@ dotenv.config();
 const seedData = async () => {
   try {
     await mongoose.connect(env.MONGODB_URI);
-    console.log('🌱 Connected to MongoDB for seeding...');
+    console.info('Connecting to MongoDB for seeding...');
 
     // Clear existing data
     await User.deleteMany();
     await Lead.deleteMany();
-    console.log('🗑️ Existing data cleared');
+    console.info('Existing data cleared');
 
     const users = [
       {
@@ -32,7 +32,7 @@ const seedData = async () => {
     ];
 
     const seededUsers = await User.create(users);
-    console.log('✅ Users seeded successfully');
+    console.info('Users seeded successfully');
 
     const adminId = seededUsers.find((u) => u.role === 'admin')?._id;
 
@@ -76,12 +76,12 @@ const seedData = async () => {
       ];
 
       await Lead.create(leads);
-      console.log('✅ Leads seeded successfully');
+      console.info('Leads seeded successfully');
     }
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error seeding data:', error);
+    console.error('Error seeding data:', error);
     process.exit(1);
   }
 };

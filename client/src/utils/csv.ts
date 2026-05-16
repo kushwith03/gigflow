@@ -1,4 +1,4 @@
-export const downloadCSV = (data: any[], filename: string) => {
+export const downloadCSV = (data: Record<string, unknown>[], filename: string) => {
   if (data.length === 0) return;
 
   // Define the fields we want to export and their display names
@@ -15,11 +15,11 @@ export const downloadCSV = (data: any[], filename: string) => {
   const rows = data.map((obj) => 
     fields.map(field => {
       let val = obj[field.key];
-      if (field.key === 'createdAt') {
+      if (field.key === 'createdAt' && typeof val === 'string') {
         val = new Date(val).toLocaleDateString();
       }
       // Escape quotes and wrap in quotes
-      return `"${String(val).replace(/"/g, '""')}"`;
+      return `"${String(val ?? '').replace(/"/g, '""')}"`;
     }).join(',')
   );
 
