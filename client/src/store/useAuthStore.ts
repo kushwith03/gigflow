@@ -15,8 +15,8 @@ interface AuthState {
   isLoading: boolean;
   isInitialLoading: boolean;
   setAuth: (user: User, token: string) => void;
-  login: (data: any) => Promise<void>;
-  register: (data: any) => Promise<void>;
+  login: (credentials: Record<string, string>) => Promise<void>;
+  register: (userData: Record<string, string>) => Promise<void>;
   logout: () => void;
   initializeAuth: () => Promise<void>;
 }

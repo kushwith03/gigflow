@@ -1,8 +1,9 @@
 import User from '../models/user.model';
 import { AppError } from '../utils/errors';
 import { generateToken } from '../utils/jwt';
+import { IUser } from '../types/user.types';
 
-export const registerUser = async (userData: any) => {
+export const registerUser = async (userData: Partial<IUser>) => {
   const { email } = userData;
   const existingUser = await User.findOne({ email });
 
@@ -24,7 +25,7 @@ export const registerUser = async (userData: any) => {
   };
 };
 
-export const loginUser = async (credentials: any) => {
+export const loginUser = async (credentials: Pick<IUser, 'email' | 'password'>) => {
   const { email, password } = credentials;
 
   const user = await User.findOne({ email }).select('+password');
