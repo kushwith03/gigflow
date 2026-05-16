@@ -3,11 +3,11 @@ import { useUIStore } from '@/store/useUIStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/Button';
-import { LogOut, User as UserIcon } from 'lucide-react';
+import { LogOut, User as UserIcon, Moon, Sun, Menu } from 'lucide-react';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
-  const { isSidebarOpen } = useUIStore();
+  const { isSidebarOpen, toggleSidebar, isDarkMode, toggleDarkMode } = useUIStore();
   const { user, logout } = useAuthStore();
 
   const handleLogout = () => {
@@ -16,44 +16,66 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar Placeholder */}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex transition-colors duration-200">
+      {/* Sidebar */}
       <aside 
         className={cn(
-          "bg-white border-r border-gray-200 transition-all duration-300",
+          "bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 z-30",
           isSidebarOpen ? "w-64" : "w-20"
         )}
       >
-        <div className="h-16 flex items-center justify-center border-b border-gray-200 font-bold text-primary-600">
-          {isSidebarOpen ? "GigFlow" : "GF"}
+        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700 font-bold text-primary-600 dark:text-primary-400">
+          <span className={cn("transition-opacity", isSidebarOpen ? "opacity-100" : "opacity-0 w-0 overflow-hidden")}>
+            GigFlow
+          </span>
+          <Button variant="ghost" size="sm" onClick={toggleSidebar} className="p-1">
+            <Menu size={20} />
+          </Button>
         </div>
-        <nav className="p-4">
+        <nav className="p-4 space-y-2">
           {/* Nav items will go here */}
+          <div className={cn(
+            "flex items-center gap-3 p-2 rounded-md bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400",
+            !isSidebarOpen && "justify-center"
+          )}>
+            <Menu size={20} />
+            {isSidebarOpen && <span className="text-sm font-medium">Leads</span>}
+          </div>
         </nav>
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-          <h2 className="text-lg font-semibold text-gray-800">Dashboard</h2>
-          
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center">
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 sm:px-8 z-20 transition-colors">
+          <div className="flex items-center gap-2">
+            {!isSidebarOpen && (
+              <Button variant="ghost" size="sm" onClick={toggleSidebar} className="p-1 md:hidden">
+                <Menu size={20} />
+              </Button>
+            )}
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 truncate">Leads</h2>
+          </div>
+
+          <div className="flex items-center gap-1 sm:gap-4">
+            <Button variant="ghost" size="sm" onClick={toggleDarkMode} className="text-gray-500 dark:text-gray-400 p-2">
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </Button>
+      ...
+
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+              <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400 flex items-center justify-center">
                 <UserIcon size={16} />
               </div>
-              <span className="hidden sm:inline font-medium">{user?.name}</span>
-              <span className="hidden sm:inline text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500 capitalize">
-                {user?.role}
-              </span>
+              <span className="hidden md:inline font-medium">{user?.name}</span>
             </div>
-            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-gray-500">
-              <LogOut size={18} className="mr-2" />
-              Logout
+            
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-gray-500 dark:text-gray-400">
+              <LogOut size={18} className="sm:mr-2" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           </div>
         </header>
-        <main className="p-8">
+        <main className="p-4 sm:p-8 overflow-auto">
           <Outlet />
         </main>
       </div>

@@ -1,8 +1,10 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { leadService } from '@/services/lead.service';
+import { Lead } from '@/types/lead';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import {
@@ -26,7 +28,7 @@ interface LeadModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  lead?: any; // If provided, we're editing
+  lead?: Lead | null;
 }
 
 export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) => {
@@ -45,7 +47,6 @@ export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
     },
   });
 
-  // Reset form when modal opens/closes or lead changes
   React.useEffect(() => {
     if (isOpen) {
       reset(lead || { status: 'New', source: 'Website' });
@@ -54,7 +55,7 @@ export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
 
   const onSubmit = async (data: LeadFormValues) => {
     try {
-      if (isEditing) {
+      if (isEditing && lead) {
         await leadService.updateLead(lead._id, data);
         toast.success('Lead updated successfully');
       } else {
@@ -91,10 +92,10 @@ export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
           
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-gray-700">Status</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors">Status</label>
               <select
                 {...register('status')}
-                className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                className="flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-gray-100 transition-colors"
               >
                 <option value="New">New</option>
                 <option value="Contacted">Contacted</option>
@@ -103,10 +104,10 @@ export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
               </select>
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-gray-700">Source</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors">Source</label>
               <select
                 {...register('source')}
-                className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                className="flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-gray-100 transition-colors"
               >
                 <option value="Website">Website</option>
                 <option value="Instagram">Instagram</option>
@@ -128,4 +129,3 @@ export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
     </Modal>
   );
 };
-import React from 'react';

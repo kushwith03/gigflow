@@ -19,7 +19,7 @@ export const createLead = async (leadData: Partial<ILead>, userId: string) => {
 export const getLeads = async (filters: ILeadFilter) => {
   const { status, source, search, page = 1, limit = 10, sort = 'latest' } = filters;
 
-  const query: any = {};
+  const query: Record<string, any> = {};
 
   if (status) query.status = status;
   if (source) query.source = source;

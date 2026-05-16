@@ -1,52 +1,117 @@
-# gigflow
+# GigFlow 🚀
 
-A production-quality Lead Management System built with the MERN stack.
+A production-quality Lead Management System (CRM) built for efficiency and scale.
 
-## Features
+## ✨ Features
 
-- **JWT Authentication:** Secure access with role-based permissions (Admin/Sales).
-- **Leads Management:** Full CRUD operations for sales leads.
-- **Advanced Filtering:** Search, debounced filtering, and pagination.
-- **CSV Export:** Export lead data for external reporting.
-- **Responsive Dashboard:** Optimized for both desktop and mobile.
-- **Docker Ready:** Easy deployment with containerization.
+- **Robust Authentication:** JWT-based secure access with session persistence.
+- **Role-Based Access Control (RBAC):** Distinct permissions for `admin` and `sales` roles.
+- **Advanced Lead Management:** Full CRUD operations with a polished, responsive dashboard.
+- **Smart Filtering:** Combined filtering by status, source, and real-time debounced search.
+- **CSV Export:** Export filtered lead data for offline analysis.
+- **Dark Mode:** System-aware toggle with persistent user preference.
+- **Developer Experience:** TypeScript throughout, absolute imports, and containerized development.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Frontend
-- React (Vite)
-- TypeScript
-- TailwindCSS
-- Zustand (State Management)
-- React Router (Routing)
-- Axios (API Client)
-- React Hook Form & Zod (Forms & Validation)
+- **Framework:** React 19 (Vite)
+- **Language:** TypeScript
+- **Styling:** TailwindCSS
+- **State Management:** Zustand
+- **Routing:** React Router 7
+- **Forms:** React Hook Form & Zod
+- **Icons:** Lucide React
+- **Notifications:** Sonner
 
 ### Backend
-- Node.js & Express
-- TypeScript
-- MongoDB & Mongoose (ODM)
-- JWT & bcryptjs (Security)
+- **Runtime:** Node.js (Express)
+- **Language:** TypeScript
+- **Database:** MongoDB (Mongoose)
+- **Security:** JWT, bcryptjs, Helmet, CORS
+- **Validation:** Zod
 
-## Project Structure
+## 📁 Project Structure
 
 ```text
 gigflow/
-├── client/          # React frontend
-├── server/          # Express backend
-└── README.md        # Project documentation
+├── client/              # React Frontend
+│   ├── src/
+│   │   ├── components/  # Reusable UI & Feature components
+│   │   ├── hooks/       # Custom React hooks
+│   │   ├── layouts/     # Page layout wrappers
+│   │   ├── pages/       # Route-level components
+│   │   ├── services/    # API interaction layer
+│   │   ├── store/       # Zustand state stores
+│   │   └── utils/       # Shared utility functions
+├── server/              # Express Backend
+│   ├── src/
+│   │   ├── config/      # DB & Env configurations
+│   │   ├── controllers/ # Request handlers
+│   │   ├── models/      # Mongoose schemas
+│   │   ├── routes/      # API route definitions
+│   │   ├── services/    # Business logic layer
+│   │   └── utils/       # Backend helpers
+└── docker-compose.yml   # Orchestration for the full stack
 ```
 
-## Setup Instructions
+## 🚀 Getting Started
 
-### Backend
-1. `cd server`
-2. `npm install`
-3. Create `.env` from `.env.example`
-4. `npm run dev`
+### Prerequisites
+- Node.js 20+
+- MongoDB (Local or Atlas)
+- Docker (Optional, for containerized setup)
 
-### Frontend
-1. `cd client`
-2. `npm install`
-3. Create `.env` from `.env.example`
-4. `npm run dev`
+### Quick Start (Manual)
+
+1. **Clone & Install**
+   ```bash
+   git clone https://github.com/kushwith03/gigflow.git
+   cd gigflow
+   ```
+
+2. **Setup Backend**
+   ```bash
+   cd server
+   npm install
+   # Create .env from .env.example
+   npm run seed  # Populate initial admin/sales users & leads
+   npm run dev
+   ```
+
+3. **Setup Frontend**
+   ```bash
+   cd ../client
+   npm install
+   # Create .env from .env.example
+   npm run dev
+   ```
+
+### Quick Start (Docker)
+```bash
+docker-compose up --build
+```
+Access the app at `http://localhost`.
+
+## 🧪 API Documentation
+
+Detailed API documentation is available in [API.md](./API.md).
+
+### Auth Endpoints
+- `POST /api/auth/register` - Create new account
+- `POST /api/auth/login` - Authenticate and get token
+- `GET /api/auth/me` - Get current user profile (Protected)
+
+### Leads Endpoints
+- `GET /api/leads` - List leads (Filters: `status`, `source`, `search`, `page`, `sort`)
+- `POST /api/leads` - Create new lead (Protected)
+- `GET /api/leads/:id` - Get lead details (Protected)
+- `PATCH /api/leads/:id` - Update lead (Protected)
+- `DELETE /api/leads/:id` - Remove lead (Admin Only)
+
+## 🛡️ Default Credentials (after seeding)
+- **Admin:** `admin@gigflow.com` / `password123`
+- **Sales:** `sales@gigflow.com` / `password123`
+
+---
+Built with ❤️ for production-company internship preparations.

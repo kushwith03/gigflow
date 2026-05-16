@@ -2,15 +2,18 @@ import { useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { AppRouter } from './routes';
 import { useAuthStore } from './store/useAuthStore';
+import { useUIStore } from './store/useUIStore';
 import { Spinner } from './components/ui/Spinner';
 import './index.css';
 
 function App() {
   const { initializeAuth, isInitialLoading } = useAuthStore();
+  const { initializeTheme } = useUIStore();
 
   useEffect(() => {
     initializeAuth();
-  }, [initializeAuth]);
+    initializeTheme();
+  }, [initializeAuth, initializeTheme]);
 
   if (isInitialLoading) {
     return (
