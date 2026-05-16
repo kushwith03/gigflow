@@ -19,11 +19,12 @@ services:
       - mongodb
 
   client:
-    build: ./client
+    build:
+      context: ./client
+      args:
+        - VITE_API_URL=http://localhost:5000/api
     ports:
       - "80:80"
-    environment:
-      - VITE_API_URL=http://localhost:5000/api
     depends_on:
       - server
 

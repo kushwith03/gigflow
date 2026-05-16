@@ -35,7 +35,7 @@ const seedData = async () => {
     const seededUsers = await User.create(users as Partial<IUser>[]);
     console.info('Users seeded successfully');
 
-    const adminId = seededUsers.find((u: any) => u.role === 'admin')?._id;
+    const adminId = seededUsers.find((u: IUser) => u.role === 'admin')?._id;
 
     if (adminId) {
       const leads = [

@@ -8,6 +8,7 @@ const envSchema = z.object({
   MONGODB_URI: z.string(),
   JWT_SECRET: z.string(),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  CORS_ORIGIN: z.string().default('*'),
 });
 
 const _env = envSchema.safeParse(process.env);
