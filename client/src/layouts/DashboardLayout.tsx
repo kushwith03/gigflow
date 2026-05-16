@@ -60,7 +60,6 @@ const DashboardLayout = () => {
             <Button variant="ghost" size="sm" onClick={toggleDarkMode} className="text-gray-500 dark:text-gray-400 p-2">
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </Button>
-      ...
 
             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
               <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400 flex items-center justify-center">
