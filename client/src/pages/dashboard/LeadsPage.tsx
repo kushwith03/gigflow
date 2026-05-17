@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Plus, Search, Trash2, ChevronLeft, ChevronRight, Download, Eye } from 'lucide-react';
 import { leadService } from '@/services/lead.service';
-import type { Lead, LeadFilters, Pagination } from '@/types/lead';
+import type { Lead, Pagination } from '@/types/lead';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Button } from '@/components/ui/Button';
@@ -17,28 +17,28 @@ const LeadsPage = () => {
   const { user } = useAuthStore();
   const isAdmin = user?.role === 'admin';
 
-  // State
+  // Filters & Pagination state
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
+  
+  const [filters, setFilters] = useState({
+    status: '',
+    source: '',
+    sort: 'latest',
+    limit: 10,
+  });
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchInput, setSearchInput] = useState('');
+  const debouncedSearch = useDebounce(searchInput, 500);
+
   const [pagination, setPagination] = useState<Pagination>({
     total: 0,
     page: 1,
     totalPages: 1,
     limit: 10,
   });
-
-  // Filters state
-  const [filters, setFilters] = useState<LeadFilters>({
-    page: 1,
-    limit: 10,
-    search: '',
-    status: '',
-    source: '',
-    sort: 'latest',
-  });
-
-  const debouncedSearch = useDebounce(filters.search, 500);
 
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,28 +50,46 @@ const LeadsPage = () => {
       const response = await leadService.getLeads({
         ...filters,
         search: debouncedSearch,
+        page: currentPage,
       });
+      
+      // Ensure we don't overwrite leads with empty data if there was a race condition
+      // though backend should be consistent.
       setLeads(response.data);
       setPagination(response.meta);
+      
+      // If current page exceeds total pages after filter/search, reset to last page
+      if (response.meta.totalPages > 0 && currentPage > response.meta.totalPages) {
+        setCurrentPage(response.meta.totalPages);
+      }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Failed to fetch leads';
       toast.error(message);
     } finally {
       setLoading(false);
     }
-  }, [filters, debouncedSearch]);
+  }, [filters, debouncedSearch, currentPage]);
 
   useEffect(() => {
     fetchLeads();
   }, [fetchLeads]);
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value, page: 1 }));
+    setFilters((prev) => ({ ...prev, [name]: value }));
+    setCurrentPage(1); // Reset to first page on filter change
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    setCurrentPage(1); // Reset to first page on search
   };
 
   const handlePageChange = (newPage: number) => {
-    setFilters((prev) => ({ ...prev, page: newPage }));
+    // Boundary checks
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setCurrentPage(newPage);
+    }
   };
 
   const handleExport = async () => {
@@ -79,10 +97,10 @@ const LeadsPage = () => {
     try {
       const response = await leadService.getLeads({
         ...filters,
+        search: debouncedSearch,
         limit: 1000,
         page: 1,
       });
-      // Correctly cast response.data to expected Record<string, unknown>[]
       const exportData = response.data.map(lead => ({
         ...lead,
         _id: lead._id.toString(),
@@ -163,8 +181,8 @@ const LeadsPage = () => {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary-500 transition-colors" size={18} />
           <input
             name="search"
-            value={filters.search}
-            onChange={handleFilterChange}
+            value={searchInput}
+            onChange={handleSearchChange}
             placeholder="Search by name or email..."
             className="w-full pl-11 pr-4 py-3 border-none focus:ring-0 text-sm bg-transparent dark:text-gray-100 dark:placeholder-gray-500"
           />
@@ -230,8 +248,8 @@ const LeadsPage = () => {
           <div className="py-24">
             <EmptyState
               title="No leads found"
-              description={filters.search || filters.status || filters.source ? "We couldn't find any leads matching your current filters." : "Your lead pipeline is empty. Ready to grow your business?"}
-              action={!filters.search && !filters.status && !filters.source && (
+              description={searchInput || filters.status || filters.source ? "We couldn't find any leads matching your current filters." : "Your lead pipeline is empty. Ready to grow your business?"}
+              action={!searchInput && !filters.status && !filters.source && (
                 <Button onClick={openCreateModal} className="mt-4">Add Your First Lead</Button>
               )}
             />
@@ -307,7 +325,7 @@ const LeadsPage = () => {
         {!loading && leads.length > 0 && (
           <div className="px-8 py-5 border-t border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between bg-white dark:bg-gray-900 gap-6">
             <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-              Page <span className="text-gray-900 dark:text-gray-200">{pagination.page}</span> of <span className="text-gray-900 dark:text-gray-200">{pagination.totalPages}</span>
+              Page <span className="text-gray-900 dark:text-gray-200">{currentPage}</span> of <span className="text-gray-900 dark:text-gray-200">{pagination.totalPages}</span>
               <span className="mx-2">•</span>
               Total <span className="text-gray-900 dark:text-gray-200">{pagination.total}</span> leads
             </div>
@@ -316,8 +334,8 @@ const LeadsPage = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handlePageChange(pagination.page - 1)}
-                disabled={pagination.page === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1 || loading}
                 className="hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-30"
               >
                 <ChevronLeft size={16} />
@@ -327,13 +345,13 @@ const LeadsPage = () => {
                 {Array.from({ length: Math.min(pagination.totalPages, 5) }, (_, i) => {
                   let pageNum = i + 1;
                   // Basic windowing for pagination
-                  if (pagination.totalPages > 5 && pagination.page > 3) {
-                    pageNum = pagination.page - 3 + i;
-                    if (pageNum + (5-i) > pagination.totalPages) {
+                  if (pagination.totalPages > 5 && currentPage > 3) {
+                    pageNum = currentPage - 2 + i;
+                    if (pageNum + (5 - i) > pagination.totalPages) {
                         pageNum = pagination.totalPages - 5 + i + 1;
                     }
                   }
-                  if (pageNum > pagination.totalPages) return null;
+                  if (pageNum > pagination.totalPages || pageNum < 1) return null;
 
                   return (
                     <button
@@ -341,7 +359,7 @@ const LeadsPage = () => {
                       onClick={() => handlePageChange(pageNum)}
                       className={cn(
                         "min-w-[32px] h-8 flex items-center justify-center rounded-md text-xs font-bold transition-all",
-                        pagination.page === pageNum 
+                        currentPage === pageNum 
                           ? "bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm" 
                           : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                       )}
@@ -355,8 +373,8 @@ const LeadsPage = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handlePageChange(pagination.page + 1)}
-                disabled={pagination.page === pagination.totalPages}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === pagination.totalPages || loading}
                 className="hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-30"
               >
                 <ChevronRight size={16} />
