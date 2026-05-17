@@ -142,6 +142,8 @@ const LeadsPage = () => {
       case 'New': return 'info';
       case 'Contacted': return 'warning';
       case 'Qualified': return 'success';
+      case 'Proposal': return 'info';
+      case 'Won': return 'success';
       case 'Lost': return 'error';
       default: return 'default';
     }
@@ -201,6 +203,8 @@ const LeadsPage = () => {
               <option value="New">New</option>
               <option value="Contacted">Contacted</option>
               <option value="Qualified">Qualified</option>
+              <option value="Proposal">Proposal</option>
+              <option value="Won">Won</option>
               <option value="Lost">Lost</option>
             </select>
           </div>
@@ -216,6 +220,10 @@ const LeadsPage = () => {
               <option value="">All Sources</option>
               <option value="Website">Website</option>
               <option value="Instagram">Instagram</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Facebook Ads">Facebook Ads</option>
+              <option value="Cold Email">Cold Email</option>
+              <option value="WhatsApp">WhatsApp</option>
               <option value="Referral">Referral</option>
             </select>
           </div>

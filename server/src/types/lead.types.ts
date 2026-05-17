@@ -1,7 +1,7 @@
 import { Document, Types } from 'mongoose';
 
-export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Lost';
-export type LeadSource = 'Website' | 'Instagram' | 'Referral';
+export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Won' | 'Lost';
+export type LeadSource = 'Website' | 'Instagram' | 'LinkedIn' | 'Referral' | 'Facebook Ads' | 'Cold Email' | 'WhatsApp';
 
 export interface ILead extends Document {
   name: string;

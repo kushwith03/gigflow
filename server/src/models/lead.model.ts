@@ -17,12 +17,12 @@ const leadSchema = new mongoose.Schema<ILead>(
     },
     status: {
       type: String,
-      enum: ['New', 'Contacted', 'Qualified', 'Lost'],
+      enum: ['New', 'Contacted', 'Qualified', 'Proposal', 'Won', 'Lost'],
       default: 'New',
     },
     source: {
       type: String,
-      enum: ['Website', 'Instagram', 'Referral'],
+      enum: ['Website', 'Instagram', 'LinkedIn', 'Referral', 'Facebook Ads', 'Cold Email', 'WhatsApp'],
       required: [true, 'Lead source is required'],
     },
     createdBy: {

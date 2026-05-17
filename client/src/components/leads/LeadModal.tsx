@@ -18,8 +18,8 @@ import {
 const leadSchema = z.object({
   name: z.string().min(2, 'Name is too short'),
   email: z.string().email('Invalid email address'),
-  status: z.enum(['New', 'Contacted', 'Qualified', 'Lost']),
-  source: z.enum(['Website', 'Instagram', 'Referral']),
+  status: z.enum(['New', 'Contacted', 'Qualified', 'Proposal', 'Won', 'Lost']),
+  source: z.enum(['Website', 'Instagram', 'LinkedIn', 'Facebook Ads', 'Cold Email', 'WhatsApp', 'Referral']),
 });
 
 type LeadFormValues = z.infer<typeof leadSchema>;
@@ -101,6 +101,8 @@ export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
                 <option value="New">New</option>
                 <option value="Contacted">Contacted</option>
                 <option value="Qualified">Qualified</option>
+                <option value="Proposal">Proposal</option>
+                <option value="Won">Won</option>
                 <option value="Lost">Lost</option>
               </select>
             </div>
@@ -112,6 +114,10 @@ export const LeadModal = ({ isOpen, onClose, onSuccess, lead }: LeadModalProps) 
               >
                 <option value="Website">Website</option>
                 <option value="Instagram">Instagram</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Facebook Ads">Facebook Ads</option>
+                <option value="Cold Email">Cold Email</option>
+                <option value="WhatsApp">WhatsApp</option>
                 <option value="Referral">Referral</option>
               </select>
             </div>
