@@ -8,7 +8,7 @@ import './index.css';
 
 function App() {
   const { initializeAuth, isInitialLoading } = useAuthStore();
-  const { initializeTheme } = useUIStore();
+  const { initializeTheme, isDarkMode } = useUIStore();
 
   useEffect(() => {
     initializeAuth();
@@ -17,17 +17,17 @@ function App() {
 
   if (isInitialLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Spinner size="lg" />
       </div>
     );
   }
 
   return (
-    <>
-      <Toaster position="top-right" richColors closeButton />
+    <div className={isDarkMode ? 'dark' : ''}>
+      <Toaster position="top-right" richColors closeButton theme={isDarkMode ? 'dark' : 'light'} />
       <AppRouter />
-    </>
+    </div>
   );
 }
 
