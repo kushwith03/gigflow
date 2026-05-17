@@ -46,8 +46,8 @@ const RegisterPage = () => {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900">Create an account</h2>
-        <p className="mt-2 text-sm text-gray-600">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Create an account</h2>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
           Join GigFlow to start managing your leads
         </p>
       </div>
