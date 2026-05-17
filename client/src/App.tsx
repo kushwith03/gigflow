@@ -2,32 +2,39 @@ import { useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { AppRouter } from './routes';
 import { useAuthStore } from './store/useAuthStore';
-import { useUIStore } from './store/useUIStore';
+import { ThemeProvider, useTheme } from './hooks/useTheme';
 import { Spinner } from './components/ui/Spinner';
 import './index.css';
 
-function App() {
+function AppContent() {
   const { initializeAuth, isInitialLoading } = useAuthStore();
-  const { initializeTheme, isDarkMode } = useUIStore();
+  const { theme } = useTheme();
 
   useEffect(() => {
     initializeAuth();
-    initializeTheme();
-  }, [initializeAuth, initializeTheme]);
+  }, [initializeAuth]);
 
   if (isInitialLoading) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      <div className={`min-h-screen flex items-center justify-center ${theme === 'dark' ? 'bg-gray-950' : 'bg-gray-50'}`}>
         <Spinner size="lg" />
       </div>
     );
   }
 
   return (
-    <div className={isDarkMode ? 'dark' : ''}>
-      <Toaster position="top-right" richColors closeButton theme={isDarkMode ? 'dark' : 'light'} />
+    <>
+      <Toaster position="top-right" richColors closeButton theme={theme} />
       <AppRouter />
-    </div>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 
