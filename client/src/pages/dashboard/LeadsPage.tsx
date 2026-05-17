@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
-import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, Download, Eye } from 'lucide-react';
 import { leadService } from '@/services/lead.service';
 import type { Lead, LeadFilters, Pagination } from '@/types/lead';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -238,6 +238,13 @@ const LeadsPage = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => openEditModal(lead)}
+                          className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                          title="View Details"
+                        >
+                          <Eye size={16} />
+                        </button>
                         <button
                           onClick={() => openEditModal(lead)}
                           className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-md transition-colors"

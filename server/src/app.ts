@@ -12,8 +12,28 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+
+// CORS Configuration
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  env.CORS_ORIGIN,
+].filter(Boolean);
+
 app.use(cors({
-  origin: env.CORS_ORIGIN,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.includes(origin) || 
+                     (env.NODE_ENV !== 'production' && env.CORS_ORIGIN === '*');
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(helmet());
